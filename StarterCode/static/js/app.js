@@ -1,18 +1,20 @@
 d3.json("/static/js/samples.json").then(function(data){
     const belleyData=data;
     let ids =belleyData.names;
+    let samples=belleyData.samples;
     console.log(ids);
+    console.log(samples);
     const selectBox=d3.select("#selDataset");
     for(let i =0; i< ids.length; i++){
         selectBox.append("option").text(ids[i]);}
 });
-
-function updateChart(ids){
-    // const sample_values= belleyData.samples[ids].sample_values;
-    // const otu_ids =  belleyData.samples[ids].otu_ids;
-    const otu_labels=belleyData.samples[ids].otu_ids.slice(0,10).reverse()
-    const top10Ids= belleyData.samples[ids].otu_ids.slice(0,10).reverse()
-    const top10Sample_values=belleyData.samples[ids].sample_values.slice(0,10).reverse();
+let i=0;
+function makechart(i){
+    // const sample_values= samples.sample_values;
+    // const otu_ids =  samples.otu_ids;
+    const otu_labels=samples[i].otu_labels.slice(0,10).reverse()
+    const top10Ids= samples[i].otu_ids.slice(0,10).reverse()
+    const top10Sample_values=samples[i].sample_values.slice(0,10).reverse();
 
     let barChart = {
         x: top10Sample_values,
@@ -22,27 +24,34 @@ function updateChart(ids){
         text: otu_labels
       };
 
-    let layout = {
-        width: 350,
-        height: 550
-    };
+ 
       
-      let barChartdata = [barChart];
+    let barChartdata = [barChart];
       
-      Plotly.newPlot("bar", barChartdata,layout);
+    Plotly.newPlot("bar", barChartdata);
       
 }
-let ids=1;
-updateChart(ids)
+makechart(i)
 
-let keys = Object.keys(data.metadata[id]);
-        let values = Object.values(data.metadata[id]) 
-        let sample_metadata = d3.select("#sample-metadata");
+// function updateData(){
+//     let dropdownMenu = d3.select("#selDataset");
+//     // Assign the value of the dropdown menu option to a variable
+//     let nameID= dropdownMenu.property("value");
+//     console.log(nameID);
 
-        sample_metadata.html("");
+//     for(let i =0; i< idSamples.length; i++){
+//         if(nameID===ids[i]){makeChart(i);}
+//     }
+// }
+    
 
-        for(let i =0; i< keys.length; i++){
-            sample_metadata.append("p").text(keys[i] + ": " + values[i]);
-        }  
-    }
+// d3.selectAll("#selDataset").on("change", updateData);
 
+
+// // let keys = Object.keys(belleyData.metadata[i]);
+// // let values = Object.values(belleyData.metadata[i]) 
+// // let sample_metadata = d3.select("#sample-metadata");
+// // sample_metadata.html("");
+
+// // for(let i =0; i< keys.length; i++){
+// //     ample_metadata.append("p").text(keys[i] + ": " + values[i]);}
