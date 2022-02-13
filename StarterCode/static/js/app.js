@@ -1,14 +1,17 @@
+let samples=null
 d3.json("/static/js/samples.json").then(function(data){
     const belleyData=data;
     let ids =belleyData.names;
-    let samples=belleyData.samples;
+    samples=belleyData.samples;
     console.log(ids);
     console.log(samples);
     const selectBox=d3.select("#selDataset");
     for(let i =0; i< ids.length; i++){
         selectBox.append("option").text(ids[i]);}
 });
-let i=0;
+
+
+
 function makechart(i){
     // const sample_values= samples.sample_values;
     // const otu_ids =  samples.otu_ids;
@@ -29,23 +32,60 @@ function makechart(i){
     let barChartdata = [barChart];
       
     Plotly.newPlot("bar", barChartdata);
+
+    var trace1 = {
+        x: [1, 2, 3, 4],
+        y: [10, 11, 12, 13],
+        mode: 'markers',
+        marker: {
+          color: ['rgb(93, 164, 214)', 'rgb(255, 144, 14)',  'rgb(44, 160, 101)', 'rgb(255, 65, 54)'],
+          opacity: [1, 0.8, 0.6, 0.4],
+          size: [40, 60, 80, 100]
+        }
+      };
+      
+      var data = [trace1];
+      
+      var layout = {
+        title: 'Marker Size and Color',
+        showlegend: false,
+        height: 600,
+        width: 600
+      };
+      
+      Plotly.newPlot('bubble', data, layout);
+
+    var data = [
+        {
+          domain: { x: [0, 1], y: [0, 1] },
+          value: 450,
+          title: { text: "Speed" },
+          type: "indicator",
+          mode: "gauge+number",
+          delta: { reference: 400 },
+          gauge: { axis: { range: [null, 500] } }
+        }
+      ];
+      
+      var layout = { width: 600, height: 400 };
+      Plotly.newPlot('gauge', data, layout);
       
 }
-makechart(i)
 
-// function updateData(){
-//     let dropdownMenu = d3.select("#selDataset");
-//     // Assign the value of the dropdown menu option to a variable
-//     let nameID= dropdownMenu.property("value");
-//     console.log(nameID);
 
-//     for(let i =0; i< idSamples.length; i++){
-//         if(nameID===ids[i]){makeChart(i);}
-//     }
-// }
+function updateData(){
+    let dropdownMenu = d3.select("#selDataset");
+    // Assign the value of the dropdown menu option to a variable
+    let nameID= dropdownMenu.property("value");
+    console.log(nameID);
+
+    for(let i =0; i< idSamples.length; i++){
+        if(nameID===ids[i]){makeChart(i);}
+    }
+}
     
 
-// d3.selectAll("#selDataset").on("change", updateData);
+d3.selectAll("#selDataset").on("change", updateData);
 
 
 // // let keys = Object.keys(belleyData.metadata[i]);
