@@ -31,9 +31,10 @@ function init(){d3.json("/static/js/samples.json").then(function(data){
         let top10Ids= selectedData[0].otu_ids.slice(0,10);
         console.log(top10Ids);
         let top10Sample_values=selectedData[0].sample_values.slice(0,10);
+        let yAxis = top10Ids.map(item => 'OTU' + " " + item).reverse();
         let barChart = {
             x: top10Sample_values,
-            y: top10Ids.reverse().map(row => "OTU" + row),
+            y: yAxis,
             type: 'bar',
             orientation: "h",
             text: top10Otu_labels
@@ -73,7 +74,7 @@ function init(){d3.json("/static/js/samples.json").then(function(data){
         Plotly.newPlot("bubble",bubbleChartdata);
         let wfreq=demeData.wfreq;
         console.log(wfreq);
-  
+     //making the gauge
         let gaugeTrace = [
           {   domain: { x: [0, 1], y: [0, 1] },
               value: wfreq,
@@ -169,46 +170,47 @@ function makecharts(selectedSample){
         let values = Object.values(demeData);
         let wfreq=demeData.wfreq;
         console.log(wfreq);
+        let gaugeTrace = [
+          {   domain: { x: [0, 1], y: [0, 1] },
+              value: wfreq,
+              title: { text: "Belly Button Washes Per Week" },
+              delta: { reference: 0, increasing: { color: "#8EAB80"} },
+              type: "indicator",
+              mode: "gauge+number+delta",
+              gauge: {
+                  axis: { range: [0, 9],
+                          tickwidth: 0.5,
+                          tickcolor: "black"},
+                  bar: { color: "#E0B6BB" },
+                  borderwidth: 5,
+                  bordercolor: "transparent",
+                  steps: [
+                      { range: [0, 1], color: "#F5F5EF"  },
+                      { range: [1, 2], color: "#EBEBE0" },
+                      { range: [2, 3], color: "#D3D6BA" },
+                      { range: [3, 4], color: "#E3E8BA"},
+                      { range: [4, 5], color: "#CEE3AA" },
+                      { range: [5, 6], color: "#ADC28D" },
+                      { range: [6, 7], color: "#98C28D" },
+                      { range: [7, 8], color: "#88BA8A" },
+                      { range: [8, 9], color: "#7EAB80" }
+                  ],
+              }
+          }
+       ];
+      let gaugeLayout =
+      { width: 600, height: 450, margin: { t: 0, b: 0 } }
+      Plotly.newPlot('gauge', gaugeTrace, gaugeLayout);
       
-        let deme=d3.select("#sample-metadata");
-        deme.html("");
-        for(let i=0; i<keys.length;i++) {
+      let deme=d3.select("#sample-metadata");
+      deme.html("");
+      for(let i=0; i<keys.length;i++) {
         deme.append("p").text(keys[i] + ": " + values[i]);
          };
           })
-          let wfreq=demeData.wfreq;
-          console.log(wfreq);
-          let gaugeTrace = [
-            {   domain: { x: [0, 1], y: [0, 1] },
-                value: wfreq,
-                title: { text: "Belly Button Washes Per Week" },
-                delta: { reference: 0, increasing: { color: "#8EAB80"} },
-                type: "indicator",
-                mode: "gauge+number+delta",
-                gauge: {
-                    axis: { range: [0, 9],
-                            tickwidth: 0.5,
-                            tickcolor: "black"},
-                    bar: { color: "#E0B6BB" },
-                    borderwidth: 5,
-                    bordercolor: "transparent",
-                    steps: [
-                        { range: [0, 1], color: "#F5F5EF"  },
-                        { range: [1, 2], color: "#EBEBE0" },
-                        { range: [2, 3], color: "#D3D6BA" },
-                        { range: [3, 4], color: "#E3E8BA"},
-                        { range: [4, 5], color: "#CEE3AA" },
-                        { range: [5, 6], color: "#ADC28D" },
-                        { range: [6, 7], color: "#98C28D" },
-                        { range: [7, 8], color: "#88BA8A" },
-                        { range: [8, 9], color: "#7EAB80" }
-                    ],
-                }
-            }
-         ];
-        let gaugeLayout =
-        { width: 600, height: 450, margin: { t: 0, b: 0 } }
-        Plotly.newPlot('gauge', gaugeTrace, gaugeLayout);
+        
+          
+          
     }   
 
 
