@@ -1,133 +1,217 @@
+function init(){d3.json("/static/js/samples.json").then(function(data){
+        const belleyData=data;
+        let ids =belleyData.names;
+        let samples=belleyData.samples;
+        let metaData=belleyData.metadata;
+        console.log(samples);
+        console.log(metaData);
+        const selectBox=d3.select("#selDataset");
+        for(let i =0; i< ids.length; i++){
+            selectBox.append("option").text(ids[i]);};
+        var firstSample = ids[0];
+        console.log(firstSample);
+        // function makecharts(selectedSample){
+        let selectedData=samples.filter(sampleObj => sampleObj.id == firstSample);
+        let demegraphics=metaData.filter(metaDataObj => metaDataObj.id == firstSample);
+        console.log(demegraphics);
+        // var otu_labels=selectedData[0].otu_labels;
+        // console.log(otu_labels);
+       
+ // fill in the demegraphics panel using loop interating through the demaData
+        let demeData=demegraphics[0];
+        let keys =Object.keys(demeData);
+        let values = Object.values(demeData);
+        let deme=d3.select("#sample-metadata");
+        // deme.html("");
+        for(let i=0; i<keys.length;i++) {
+           deme.append("p").text(keys[i] + ": " + values[i]);
+        };
+// making the bar graph
+        let top10Otu_labels=selectedData[0].otu_labels.slice(0,10);
+        let top10Ids= selectedData[0].otu_ids.slice(0,10);
+        console.log(top10Ids);
+        let top10Sample_values=selectedData[0].sample_values.slice(0,10);
+        let barChart = {
+            x: top10Sample_values,
+            y: top10Ids.reverse().map(row => "OTU" + row),
+            type: 'bar',
+            orientation: "h",
+            text: top10Otu_labels
+          };
 
-
-function init(){
+        let barChartdata = [barChart];
+           
+        let layout = {
+            xaxis: {
+                title: {
+                  text: 'OTU_ID ',
+                  font: {
+                    family: 'Courier New, monospace',
+                    size: 18,
+                    color: '#7f7f7f'
+                  }
+                },
+              },
+                showlegend: false,
+                height: 600,
+                width: 600
+              };
+        Plotly.newPlot("bar", barChartdata,layout);
+    //making the bubble chart       
+        let bubbleChart= {
+                x:top10Ids,
+                y:top10Sample_values,
+                mode: 'markers',
+                marker: {
+                  color: top10Ids,
+                  size: top10Sample_values
+                },
+                text: top10Otu_labels
+              };
+        
+        let bubbleChartdata = [bubbleChart];    
+        Plotly.newPlot("bubble",bubbleChartdata);
+        let wfreq=demeData.wfreq;
+        console.log(wfreq);
+  
+        let gaugeTrace = [
+          {   domain: { x: [0, 1], y: [0, 1] },
+              value: wfreq,
+              title: { text: "Belly Button Washes Per Week" },
+              delta: { reference: 0, increasing: { color: "#8EAB80"} },
+              type: "indicator",
+              mode: "gauge+number+delta",
+              gauge: {
+                  axis: { range: [0, 9],
+                          tickwidth: 0.5,
+                          tickcolor: "black"},
+                  bar: { color: "#E0B6BB" },
+                  borderwidth: 5,
+                  bordercolor: "transparent",
+                  steps: [
+                      { range: [0, 1], color: "#F5F5EF"  },
+                      { range: [1, 2], color: "#EBEBE0" },
+                      { range: [2, 3], color: "#D3D6BA" },
+                      { range: [3, 4], color: "#E3E8BA"},
+                      { range: [4, 5], color: "#CEE3AA" },
+                      { range: [5, 6], color: "#ADC28D" },
+                      { range: [6, 7], color: "#98C28D" },
+                      { range: [7, 8], color: "#88BA8A" },
+                      { range: [8, 9], color: "#7EAB80" }
+                  ],
+              }
+          }
+       ];
+      let gaugeLayout =
+      { width: 600, height: 450, margin: { t: 0, b: 0 } }
+      Plotly.newPlot('gauge', gaugeTrace, gaugeLayout);
+        })}
+init();
+function makecharts(selectedSample){
     d3.json("/static/js/samples.json").then(function(data){
         const belleyData=data;
         let ids =belleyData.names;
         let samples=belleyData.samples;
         let metaData=belleyData.metadata;
-        const selectBox=d3.select("#selDataset");
-        for(let i =0; i< ids.length; i++){
-            selectBox.append("option").text(ids[i]);}
-        console.log(samples)
-        // makecharts(ids[0])
-    })
+        var firstSample = selectedSample;
+        let selectedData=samples.filter(sampleObj => sampleObj.id == firstSample);
+        let demegraphics=metaData.filter(metaDataObj => metaDataObj.id == firstSample);
 
-};
-init();
-
-function makecharts(selectedSample){
-    d3.json("/static/js/samples.json").then(function(samples){
-    // const sample_values= samples.sample_values;
-    // const otu_ids =  samples.otu_ids;
-    selectedID=(samples.samples.filter(sampleObj => sampleObj.id == selectedSample)[0])
-
-    const top10Otu_labels=selectedID.otu_labels.slice(0,10);
-    const top10Ids= selectedID.otu_ids.slice(0,10);
-    const top10Sample_values=selectedID.sample_values.slice(0,10);
-
-    let barChart = {
-        x: top10Sample_values,
-        y: top10Ids,
-        type: 'bar',
-        orientation: "h",
-        text: top10Otu_labels
-      };
-    let barChartdata = [barChart];
+        let top10Otu_labels=selectedData[0].otu_labels.slice(0,10);
+        let top10Ids= selectedData[0].otu_ids.slice(0,10);
+        let top10Sample_values=selectedData[0].sample_values.slice(0,10);
+        let barChart = {
+            x: top10Sample_values,
+            y: top10Ids.reverse().map(row => "OTU" + row),
+            type: 'bar',
+            orientation: "h",
+            text: top10Otu_labels
+          };
+        let barChartdata = [barChart];
+          
+        Plotly.newPlot("bar", barChartdata); 
+        //making the bubble chart       
+        let bubbleChart= {
+          x:top10Ids,
+          y:top10Sample_values,
+          mode: 'markers',
+          marker: {
+            color: top10Ids,
+            size: top10Sample_values
+          },
+          text: top10Otu_labels
+        };
+  
+        let bubbleChartdata = [bubbleChart];
+        
+        let layout = {
+            xaxis: {
+            title: {
+            text: 'OTU_ID ',
+            font: {
+              family: 'Courier New, monospace',
+              size: 18,
+              color: '#7f7f7f'
+                  }
+                  },
+                  },
+              showlegend: false,
+              height: 600,
+              width: 600
+            };
+        
+        Plotly.newPlot("bubble",bubbleChartdata, layout);  
+          
+        let demeData=demegraphics[0];
+        console.log(demeData);
+        
+        let keys =Object.keys(demeData);
+        let values = Object.values(demeData);
+        let wfreq=demeData.wfreq;
+        console.log(wfreq);
       
-     Plotly.newPlot("bar", barChartdata);
-    })
+        let deme=d3.select("#sample-metadata");
+        deme.html("");
+        for(let i=0; i<keys.length;i++) {
+        deme.append("p").text(keys[i] + ": " + values[i]);
+         };
+          })
+          let wfreq=demeData.wfreq;
+          console.log(wfreq);
+          let gaugeTrace = [
+            {   domain: { x: [0, 1], y: [0, 1] },
+                value: wfreq,
+                title: { text: "Belly Button Washes Per Week" },
+                delta: { reference: 0, increasing: { color: "#8EAB80"} },
+                type: "indicator",
+                mode: "gauge+number+delta",
+                gauge: {
+                    axis: { range: [0, 9],
+                            tickwidth: 0.5,
+                            tickcolor: "black"},
+                    bar: { color: "#E0B6BB" },
+                    borderwidth: 5,
+                    bordercolor: "transparent",
+                    steps: [
+                        { range: [0, 1], color: "#F5F5EF"  },
+                        { range: [1, 2], color: "#EBEBE0" },
+                        { range: [2, 3], color: "#D3D6BA" },
+                        { range: [3, 4], color: "#E3E8BA"},
+                        { range: [4, 5], color: "#CEE3AA" },
+                        { range: [5, 6], color: "#ADC28D" },
+                        { range: [6, 7], color: "#98C28D" },
+                        { range: [7, 8], color: "#88BA8A" },
+                        { range: [8, 9], color: "#7EAB80" }
+                    ],
+                }
+            }
+         ];
+        let gaugeLayout =
+        { width: 600, height: 450, margin: { t: 0, b: 0 } }
+        Plotly.newPlot('gauge', gaugeTrace, gaugeLayout);
+    }   
 
-}
 
-// function makecharts(i){
-//     d3.json("/static/js/samples.json").then(function(i){
-//     // const sample_values= samples.sample_values;
-//     // const otu_ids =  samples.otu_ids;
-//     const top10Otu_labels=samples[i].otu_labels.slice(0,10);
-//     const top10Ids= samples[i].otu_ids.slice(0,10);
-//     const top10Sample_values=samples[i].sample_values.slice(0,10);
-
-//     let barChart = {
-//         x: top10Sample_values,
-//         y: top10Ids,
-//         type: 'bar',
-//         orientation: "h",
-//         text: top10Otu_labels
-//       };
-
-
-      
-//     let barChartdata = [barChart];
-      
-//     Plotly.newPlot("bar", barChartdata);
-//     })}
-// makecharts(0)
-// //     var trace1 = {
-// //         x: [1, 2, 3, 4],
-// //         y: [10, 11, 12, 13],
-// //         mode: 'markers',
-// //         marker: {
-// //           color: ['rgb(93, 164, 214)', 'rgb(255, 144, 14)',  'rgb(44, 160, 101)', 'rgb(255, 65, 54)'],
-// //           opacity: [1, 0.8, 0.6, 0.4],
-// //           size: [40, 60, 80, 100]
-// //         }
-// //       };
-      
-// //       var data = [trace1];
-      
-// //       var layout = {
-// //         title: 'Marker Size and Color',
-// //         showlegend: false,
-// //         height: 600,
-// //         width: 600
-// //       };
-      
-// //       Plotly.newPlot('bubble', data, layout);
-
-// //     var data = [
-// //         {
-// //           domain: { x: [0, 1], y: [0, 1] },
-// //           value: 450,
-// //           title: { text: "Speed" },
-// //           type: "indicator",
-// //           mode: "gauge+number",
-// //           delta: { reference: 400 },
-// //           gauge: { axis: { range: [null, 500] } }
-// //         }
-// //       ];
-      
-// //       var layout = { width: 600, height: 400 };
-// //       Plotly.newPlot('gauge', data, layout);
-      
-// // // }
-
-function updateData(){
-    // let dropdownMenu = d3.select("#selDataset");
-    // Assign the value of the dropdown menu option to a variable
-    let nameID= d3.event.target.value;
-    console.log(nameID);
-    for(let i =0; i< ids.length; i++){
-        if(nameID===ids[i]){makeCharts(i);}
-    }
-// }
-
-function optionChanged(this) {
-    var nameID = this.value;  
-    console.log(nameID);
+function optionChanged(selectedSample) {
+    makecharts(selectedSample);
   }
-
-
-// d3.selectAll("#selDataset").on("change",updateData);
-
-function demegraphics(sample){
-
-    
-    let keys =belleyData.metadata[i];
-    let values = Object.values(belleyData.metadata[i]) 
-    let sample_metadata = d3.select("#sample-metadata");
-     sample_metadata.html("");
-     for(let i =0; i< keys.length; i++){
-        ample_metadata.append("p").text(keys[i] + ": " + values[i]);}
-
-}
