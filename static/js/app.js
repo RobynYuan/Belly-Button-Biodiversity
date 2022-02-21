@@ -1,4 +1,4 @@
-function init(){d3.json("/static/js/samples.json").then(function(data){
+function init(){d3.json("../../samples.json").then(function(data){
         const belleyData=data;
         let ids =belleyData.names;
         let samples=belleyData.samples;
@@ -109,7 +109,7 @@ function init(){d3.json("/static/js/samples.json").then(function(data){
         })}
 init();
 function makecharts(selectedSample){
-    d3.json("/static/js/samples.json").then(function(data){
+    d3.json("../../samples.json").then(function(data){
         const belleyData=data;
         let ids =belleyData.names;
         let samples=belleyData.samples;
