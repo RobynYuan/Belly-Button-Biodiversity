@@ -1,4 +1,5 @@
-function init(){d3.json("../../samples.json").then(function(data){
+var url = "https://robynyuan.github.io/interactive_web_visulization/static/js/samples.json ";
+function init(){d3.json("url").then(function(data){
         const belleyData=data;
         let ids =belleyData.names;
         let samples=belleyData.samples;
@@ -109,7 +110,7 @@ function init(){d3.json("../../samples.json").then(function(data){
         })}
 init();
 function makecharts(selectedSample){
-    d3.json("../../samples.json").then(function(data){
+    d3.json("url").then(function(data){
         const belleyData=data;
         let ids =belleyData.names;
         let samples=belleyData.samples;
