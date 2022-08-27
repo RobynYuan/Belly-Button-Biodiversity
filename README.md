@@ -5,6 +5,7 @@
 
 Build an interactive dashboard to explore the Belly Button Biodiversity dataset, which catalogs the microbes that colonize human navels.
 
+![dashboard.png](Images/dashboard.png)
 
 1. Use the D3 library to read in `samples.json`.
 
@@ -40,15 +41,14 @@ Build an interactive dashboard to explore the Belly Button Biodiversity dataset,
 
 4. Display the sample metadata, i.e., an individual's demographic information.
 
-5. Display each key-value pair from the metadata JSON object somewhere on the page.
+![demo.png](Images/demo.png)
+
+5. Display each key-value pair from the metadata JSON object.
 
 ![dropdown_menu.png](Images/dropdown_menu.png)
 
-6. Update all of the plots any time that a new sample is selected.
 
-Additionally, you are welcome to create any layout that you would like for your dashboard. An example dashboard is shown below:
 
-![dashboard.png](Images/dashboard.png)
 
 *Creat gauge code to account for values ranging from 0 through 9.
 ![gaugescript.png](Images/gaugescript.png)
