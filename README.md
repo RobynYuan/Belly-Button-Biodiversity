@@ -1,15 +1,18 @@
 # Plot.ly Homework - Belly Button Biodiversity
 
 ![bacteria.jpg](Images/bacteria.jpg)
- Build an interactive dashboard to explore the Belly Button Biodiversity dataset, which catalogs the microbes that colonize human navels.
 
-The dataset reveals that a small handful of microbial species (also called operational taxonomic units, or OTUs, in the study) were present in more than 70% of people, while the rest were relatively rare.
 
-## Step 1: Plotly
+Build an interactive dashboard to explore the Belly Button Biodiversity dataset, which catalogs the microbes that colonize human navels.
+
 
 1. Use the D3 library to read in `samples.json`.
 
+![readinjson.png](Images/readinjson.png)
+
 2. Create a horizontal bar chart with a dropdown menu to display the top 10 OTUs found in that individual.
+
+![bargraph_script.png](Images/bargraph_script.png)
 
 * Use `sample_values` as the values for the bar chart.
 
@@ -20,6 +23,8 @@ The dataset reveals that a small handful of microbial species (also called opera
   ![bargraph.png](Images/bargraph.png)
 
 3. Create a bubble chart that displays each sample.
+
+![bubblescript.png](Images/bubblescript.png)
 
 * Use `otu_ids` for the x values.
 
@@ -46,6 +51,7 @@ Additionally, you are welcome to create any layout that you would like for your 
 ![dashboard.png](Images/dashboard.png)
 
 *Creat gauge code to account for values ranging from 0 through 9.
+![gaugescript.png](Images/gaugescript.png)
 
 ![gauge.png](Images/gauge.png)
 
